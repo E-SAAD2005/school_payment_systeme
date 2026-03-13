@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -9,10 +10,16 @@ use App\Http\Controllers\Api\AlertController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+=======
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PaymentController;
+>>>>>>> origin/task3-payments
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+<<<<<<< HEAD
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
@@ -58,10 +65,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/receipts/{receiptNumber}', function ($receiptNumber) {
 
+=======
+
+Route::get('/payments', [PaymentController::class, 'index']);
+Route::get('/payments/{id}', [PaymentController::class, 'show']);
+Route::post('/payments', [PaymentController::class, 'store']);
+Route::get('/payments/{id}/receipt/download', [PaymentController::class, 'downloadReceipt']);
+
+Route::get('/receipts/{receiptNumber}', function ($receiptNumber) {
+>>>>>>> origin/task3-payments
     $receipt = \App\Models\Receipt::where('receipt_number', $receiptNumber)->firstOrFail();
 
     return response()->json([
         'receipt_number' => $receipt->receipt_number,
+<<<<<<< HEAD
         'pdf_url' => asset('storage/' . $receipt->pdf_path)
     ]);
 });
@@ -74,3 +91,9 @@ Route::get('/alerts', [AlertController::class, 'index']);
 
 Route::get('/alerts/{id}', [AlertController::class, 'show']);
 Route::get('/alerts-generate', [AlertController::class, 'generate']);
+=======
+        'pdf_url' => asset('storage/' . $receipt->pdf_path),
+        'receipt_type' => $receipt->receipt_type,
+    ]);
+});
+>>>>>>> origin/task3-payments

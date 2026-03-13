@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -8,6 +9,11 @@ use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 use Symfony\Component\Routing\Route;
+=======
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
+>>>>>>> origin/task3-payments
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->api(prepend: [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ]);
+<<<<<<< HEAD
          $middleware->validateCsrfTokens(except: [
             'login',
             'register',
@@ -37,6 +44,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
 
+=======
+
+        $middleware->alias([
+            'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
+        ]);
+
+>>>>>>> origin/task3-payments
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {

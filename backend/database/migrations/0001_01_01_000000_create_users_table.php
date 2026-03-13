@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+<<<<<<< HEAD
+=======
+            $table->enum('role', ['admin', 'comptable', 'agent'])->default('agent');
+>>>>>>> origin/task3-payments
             $table->rememberToken();
             $table->timestamps();
         });

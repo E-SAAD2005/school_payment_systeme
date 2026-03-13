@@ -18,7 +18,11 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+<<<<<<< HEAD
    public function store(Request $request)
+=======
+    public function store(Request $request): Response
+>>>>>>> origin/task3-payments
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -29,6 +33,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+<<<<<<< HEAD
             'password' => Hash::make($request->password),
 
             // مؤقتاً فقط إذا مازال باغي تحتافظ بالكولون القديمة
@@ -47,5 +52,15 @@ class RegisteredUserController extends Controller
             'token' => $token,
             'user' => $user->load('roles', 'permissions'),
         ], 201);
+=======
+            'password' => Hash::make($request->string('password')),
+        ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return response()->noContent();
+>>>>>>> origin/task3-payments
     }
 }

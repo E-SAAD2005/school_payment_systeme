@@ -14,7 +14,11 @@ return [
     */
 
     'defaults' => [
+<<<<<<< HEAD
         'guard' => "sanctum",
+=======
+        'guard' => env('AUTH_GUARD', 'web'),
+>>>>>>> origin/task3-payments
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 

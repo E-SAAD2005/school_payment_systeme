@@ -18,7 +18,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): Response
+   public function store(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -29,13 +29,23 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->string('password')),
+            'password' => Hash::make($request->password),
+
+            // مؤقتاً فقط إذا مازال باغي تحتافظ بالكولون القديمة
+            // والأفضل لاحقاً تحيدها/تبدل اسمها
+            'role' => 'agent',
         ]);
+
+        $user->syncRoles(['agent']);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        $token = $user->createToken('api-token')->plainTextToken;
 
-        return response()->noContent();
+        return response()->json([
+            'message' => 'Register success',
+            'token' => $token,
+            'user' => $user->load('roles', 'permissions'),
+        ], 201);
     }
 }

@@ -11,6 +11,7 @@ class Receipt extends Model
         'payment_id',
         'issue_date',
         'pdf_path',
+        'receipt_type',
     ];
 
     public function payment()

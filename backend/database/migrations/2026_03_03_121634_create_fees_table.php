@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+   
     public function up(): void
     {
         Schema::create('fees', function (Blueprint $table) {
@@ -18,15 +16,13 @@ return new class extends Migration
                 ->constrained('programs')
                 ->onDelete('cascade');
             $table->decimal('amount_total', 10, 2);
-            $table->integer('installment_number'); // numéro tranche
+            $table->integer('installment_number'); 
             $table->date('due_date');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('fees');

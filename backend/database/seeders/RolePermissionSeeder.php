@@ -27,30 +27,34 @@ class RolePermissionSeeder extends Seeder
             'delete users',
         ];
 
-        foreach ($permissions as $permission) {
-            Permission::firstOrCreate([
-                'name' => $permission,
-                'guard_name' => 'sanctum'  // ✅
+        $guards = ['sanctum', 'web'];
+
+        foreach ($guards as $guard) {
+            foreach ($permissions as $permission) {
+                Permission::firstOrCreate([
+                    'name' => $permission,
+                    'guard_name' => $guard
+                ]);
+            }
+
+            $admin     = Role::firstOrCreate(['name' => 'admin',     'guard_name' => $guard]);
+            $comptable = Role::firstOrCreate(['name' => 'comptable', 'guard_name' => $guard]);
+            $agent     = Role::firstOrCreate(['name' => 'agent',     'guard_name' => $guard]);
+
+            $admin->givePermissionTo(Permission::where('guard_name', $guard)->get());
+
+            $comptable->givePermissionTo([
+                'view students',
+                'view payments',
+                'create payments',
+                'edit payments',
+            ]);
+
+            $agent->givePermissionTo([
+                'view students',
+                'create students',
+                'edit students',
             ]);
         }
-
-        $admin     = Role::firstOrCreate(['name' => 'admin',     'guard_name' => 'sanctum']);  // ✅
-        $comptable = Role::firstOrCreate(['name' => 'comptable', 'guard_name' => 'sanctum']);  // ✅
-        $agent     = Role::firstOrCreate(['name' => 'agent',     'guard_name' => 'sanctum']);  // ✅
-
-        $admin->givePermissionTo(Permission::where('guard_name', 'sanctum')->get());  // ✅
-
-        $comptable->givePermissionTo([
-            'view students',
-            'view payments',
-            'create payments',
-            'edit payments',
-        ]);
-
-        $agent->givePermissionTo([
-            'view students',
-            'create students',
-            'edit students',
-        ]);
     }
 }

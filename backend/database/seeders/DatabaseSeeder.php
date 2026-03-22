@@ -14,23 +14,16 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     public function run(): void
-<<<<<<< HEAD
-
-{
-        $this->call(RolePermissionSeeder::class);
-
+    {
+        $this->call([
+            RolePermissionSeeder::class,
+            UserSeeder::class,
+            ProgramGroupSeeder::class,
+            FeeSeeder::class,
+            StudentSeeder::class,
+        ]);
     }
 }
 
 //{ "email":"test@example.com", "password":"test@example.com" }//
-=======
-    {
-        // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-    }
-}
->>>>>>> origin/task3-payments

@@ -13,7 +13,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-<<<<<<< HEAD
+
     public function store(LoginRequest $request)
     {
         $request->authenticate();
@@ -34,21 +34,7 @@ class AuthenticatedSessionController extends Controller
      * Destroy an authenticated session.
      */
     public function destroy(Request $request)
-=======
-    public function store(LoginRequest $request): Response
-    {
-        $request->authenticate();
 
-        $request->session()->regenerate();
-
-        return response()->noContent();
-    }
-
-    /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): Response
->>>>>>> origin/task3-payments
     {
         Auth::guard('web')->logout();
 
@@ -56,15 +42,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-<<<<<<< HEAD
+
         //return response()->noContent();
         $request->user()?->currentAccessToken()?->delete();
 
         return response()->json([
             'message' => 'Logout success',
         ]);
-=======
-        return response()->noContent();
->>>>>>> origin/task3-payments
+
     }
 }

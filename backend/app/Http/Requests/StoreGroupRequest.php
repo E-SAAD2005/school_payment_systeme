@@ -15,7 +15,8 @@ class StoreGroupRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'program_id' => 'required|exists:programs,id'
+            'program_id' => 'required|exists:programs,id',
+            'academic_year' => 'required|string|max:20'
         ];
     }
 }

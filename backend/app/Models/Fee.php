@@ -2,33 +2,15 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-=======
->>>>>>> origin/task3-payments
 use Illuminate\Database\Eloquent\Model;
+
 
 class Fee extends Model
 {
-<<<<<<< HEAD
-    use HasFactory;
-    protected $fillable = [
-        'student_id',
-        'amount',
-        'status',
-        'due_date'
-    ];
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
-    }
-    public function program()
-    {
-        return $this->belongsTo(Program::class);
-    }
-}
 
-=======
+    use HasFactory;
     protected $fillable = [
         'program_id',
         'amount_total',
@@ -36,9 +18,9 @@ class Fee extends Model
         'due_date',
     ];
 
-    public function payments()
+    public function program()
     {
-        return $this->hasMany(Payment::class);
+        return $this->belongsTo(Program::class);
     }
 }
->>>>>>> origin/task3-payments
+

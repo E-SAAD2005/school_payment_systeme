@@ -15,9 +15,9 @@ class StoreFeeRequest extends FormRequest
     {
         return [
             'program_id' => 'required|exists:programs,id',
-            'amount' => 'required|numeric',
-            'due_date' => 'required|date',
-            'period' => 'required|string|max:100'
+            'amount_total' => 'required|numeric',
+            'installment_number' => 'required|integer|min:1',
+            'due_date' => 'required|date'
         ];
     }
 }

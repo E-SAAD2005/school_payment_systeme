@@ -2,26 +2,23 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-=======
->>>>>>> origin/task3-payments
+
+
 use Illuminate\Database\Eloquent\Model;
 
 class Receipt extends Model
 {
-<<<<<<< HEAD
+
     use HasFactory;
         protected $fillable = [
-            'student_id',
-            'payment_id',
-            'amount',
-            'receipt_number',
-            'date',
-            'status',
-
-
-        ];
+        'receipt_number',
+        'payment_id',
+        'issue_date',
+        'pdf_path',
+        'receipt_type',
+    ];
         public function program()
     {
         return $this->belongsTo(Program::class);
@@ -31,19 +28,12 @@ class Receipt extends Model
     {
         return $this->belongsTo(Group::class);
     }
-}
-=======
-    protected $fillable = [
-        'receipt_number',
-        'payment_id',
-        'issue_date',
-        'pdf_path',
-        'receipt_type',
-    ];
+
+
 
     public function payment()
     {
         return $this->belongsTo(Payment::class);
     }
+
 }
->>>>>>> origin/task3-payments

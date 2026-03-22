@@ -10,10 +10,27 @@ use App\Models\Payment;
 
 class AlertController extends Controller
 {
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
-        $alerts = Alert::with(['student','fee'])->get();
-        return response()->json($alerts);
+        $query = Alert::with(['student.program', 'student.group', 'fee']);
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('group_id') && $request->group_id != '') {
+            $query->whereHas('student', function($q) use ($request) {
+                $q->where('group_id', $request->group_id);
+            });
+        }
+
+        if ($request->has('program_id') && $request->program_id != '') {
+            $query->whereHas('student', function($q) use ($request) {
+                $q->where('program_id', $request->program_id);
+            });
+        }
+
+        return response()->json($query->latest()->get());
     }
 
     public function show($id)
@@ -26,24 +43,31 @@ class AlertController extends Controller
     public function generate()
     {
         $fees = Fee::all();
+        $generatedCount = 0;
 
         foreach ($fees as $fee) {
-
             $students = Student::where('program_id', $fee->program_id)->get();
 
             foreach ($students as $student) {
-
-                $totalPaid = Payment::where('student_id',$student->id)
-                    ->where('fee_id',$fee->id)
+                $totalPaid = Payment::where('student_id', $student->id)
+                    ->where('fee_id', $fee->id)
                     ->sum('amount_paid');
 
                 $remaining = $fee->amount_total - $totalPaid;
 
                 if ($remaining > 0) {
-
-                    $status = now()->gt($fee->due_date)
-                        ? 'en_retard'
-                        : 'a_risque';
+                    $dueDate = \Carbon\Carbon::parse($fee->due_date);
+                    $today = now();
+                    
+                    if ($today->gt($dueDate)) {
+                        $status = 'en_retard';
+                        $message = "🔴 RETARD : Le paiement de la tranche {$fee->installment_number} est dépassé depuis le {$dueDate->format('d/m/Y')}. Action requise : Contactez l'étudiant et régularisez le solde de {$remaining} MAD immédiatement.";
+                    } elseif ($today->diffInDays($dueDate) <= 7) {
+                        $status = 'a_risque';
+                        $message = "🟠 ÉCHÉANCE PROCHE : La tranche {$fee->installment_number} arrive à terme le {$dueDate->format('d/m/Y')}. Action conseillée : Envoyez un rappel préventif pour le solde de {$remaining} MAD.";
+                    } else {
+                        continue; // Pas d'alerte nécessaire pour l'instant
+                    }
 
                     Alert::updateOrCreate(
                         [
@@ -52,15 +76,22 @@ class AlertController extends Controller
                         ],
                         [
                             'status' => $status,
-                            'message' => 'Remaining payment: '.$remaining
+                            'message' => $message
                         ]
                     );
+                    $generatedCount++;
+                } else {
+                    // Si payé, on supprime l'alerte si elle existe
+                    Alert::where('student_id', $student->id)
+                        ->where('fee_id', $fee->id)
+                        ->delete();
                 }
             }
         }
 
         return response()->json([
-            'message' => 'Alerts generated successfully'
+            'message' => 'Alertes générées avec succès',
+            'count' => $generatedCount
         ]);
     }
 }

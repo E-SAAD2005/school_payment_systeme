@@ -2,18 +2,16 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-=======
->>>>>>> origin/task3-payments
+
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-<<<<<<< HEAD
+
     use HasFactory;
-}
-=======
+
     protected $fillable = [
         'student_id',
         'fee_id',
@@ -38,4 +36,4 @@ class Payment extends Model
         return $this->hasOne(Receipt::class);
     }
 }
->>>>>>> origin/task3-payments
+

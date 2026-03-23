@@ -1,10 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useContext, useState } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { useState } from 'react';
 import logo from '../assets/logo1.png';
 
 const Navbar = () => {
-  const { logout } = useContext(AuthContext);
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -51,16 +49,6 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Desktop Logout Button */}
-          <div className="hidden lg:block">
-            <button
-              onClick={logout}
-              className="bg-[#1A365D] hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-bold transition duration-200 border border-blue-800"
-            >
-              Déconnexion
-            </button>
-          </div>
-
           {/* Mobile menu button */}
           <div className="lg:hidden flex items-center">
             <button
@@ -99,12 +87,6 @@ const Navbar = () => {
               {link.name}
             </Link>
           ))}
-          <button
-            onClick={logout}
-            className="block w-full text-left px-3 py-2 rounded-md text-base font-medium bg-red-800 hover:bg-red-700 mt-4 transition"
-          >
-            Déconnexion
-          </button>
         </div>
       </div>
     </nav>
